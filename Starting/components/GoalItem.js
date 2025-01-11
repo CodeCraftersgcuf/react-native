@@ -1,9 +1,11 @@
-import { StyleSheet, View, Text } from "react-native-web"
+import { StyleSheet, View, Text, Pressable } from "react-native-web"
 export default function GoalItem(props) {
     return (
-        <View style={styles.goalItem} >
-            <Text style={{ color: "white" }}>{props.text}</Text>
-        </View>
+        <Pressable onPress={} >
+            <View style={styles.goalItem} >
+                <Text style={{ color: "white" }}>{props.text}</Text>
+            </View>
+        </Pressable>
     )
 }
 
