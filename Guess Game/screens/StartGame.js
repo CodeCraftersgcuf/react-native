@@ -1,46 +1,56 @@
-import { TextInput,  View, StyleSheet, Alert } from "react-native";
-import PrimaryButton from "../components/PrimaryButton";
+import { TextInput, View, StyleSheet, Alert, Text } from "react-native";
+import PrimaryButton from "../components/ui/PrimaryButton";
 import { back } from "react-native/Libraries/Animated/Easing";
 import { useState } from "react";
+import Title from "../components/ui/Title";
+import Colors from "../constans/colors";
+import Card from "../components/ui/Card";
+import InstructionText from "../components/ui/InstructionText";
 
-function StartGame({onPickNumber}) {
+function StartGame({ onPickNumber }) {
   const [enteredNumber, setEnteredNumber] = useState("");
 
   function numberInputHandler(inputText) {
     setEnteredNumber(inputText);
   }
-  function resetInputHandler(){
-      setEnteredNumber('');
+  function resetInputHandler() {
+    setEnteredNumber("");
   }
   function confirmInputHandler() {
     const chosenNumber = parseInt(enteredNumber);
 
-    if(isNaN(chosenNumber) || chosenNumber <=0 || chosenNumber > 99){
-      Alert.alert("Invalid number", "Number has to be between 1 and 99", [{text: "OK", style: "destructive", onPress: resetInputHandler}]);
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert("Invalid number", "Number has to be between 1 and 99", [
+        { text: "OK", style: "destructive", onPress: resetInputHandler },
+      ]);
       return;
     }
 
     onPickNumber(chosenNumber);
   }
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.numberInput}
-        maxLength={2}
-        keyboardType="number-pad"
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={numberInputHandler}
-        value={enteredNumber}
-      />
-      <View style={styles.buttonsContainer}>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton> Reset </PrimaryButton>
+    <View style={styles.rootContainer}>
+      <Title>Guess My Number</Title>
+      <Card>
+        <InstructionText>Pick a number between 1 and 99</InstructionText>
+        <TextInput
+          style={styles.numberInput}
+          maxLength={2}
+          keyboardType="number-pad"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={numberInputHandler}
+          value={enteredNumber}
+        />
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton> Reset </PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={confirmInputHandler}>Start</PrimaryButton>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={confirmInputHandler}>Start</PrimaryButton>
-        </View> 
-      </View>
+      </Card>
     </View>
   );
 }
@@ -48,16 +58,12 @@ function StartGame({onPickNumber}) {
 export default StartGame;
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    alingItems: "center",
+  rootContainer: {
+    flex: 1,
     marginTop: 100,
-    marginHorizontal: 24,
-    padding: 16,
-    backgroundColor: "#72063c",
-    borderRadius: 8,
-    elevation: 4,
-    shadowColor: "#000",
+    alingItems: "center",
   },
+
   numberInput: {
     height: 50,
     width: 50,
@@ -72,7 +78,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
   },
-  buttonContainer:{
-    flex:1,
-  }
+  buttonContainer: {
+    flex: 1,
+  },
 });

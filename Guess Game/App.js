@@ -1,22 +1,43 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, ImageBackground } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  SafeAreaView,
+} from "react-native";
 import StartGame from "./screens/StartGame";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import Game from "./screens/Game";
+import GameOver from "./screens/GameOver";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState();
+  const [gameIsOver, setGameIsOver] = useState(false);
+  const [guessRounds, setGuessRounds] = useState(0);
 
-
-  function pickedNumberHandler(pickedNumber){
-    setUserNumber(pickedNumber)
+  function gameOverHanlder(numberOfRounds) {
+    setGameIsOver(true);
+    setGuessRounds(numberOfRounds);
   }
 
-  let screen= <StartGame onPickNumber={pickedNumberHandler}/>
+  function pickedNumberHandler(pickedNumber) {
+    setUserNumber(pickedNumber);
+  }
+  function onStartNewGameHandler() {
+    setUserNumber(null);
+    setGameIsOver(false);
+    setGuessRounds(0);
+  }
 
-  if (userNumber){
-    screen = <Game/>
+  let screen = <StartGame onPickNumber={pickedNumberHandler} />;
+
+  if (userNumber) {
+    screen = <Game userNumber={userNumber} onGameOver={gameOverHanlder} />;
+  }
+  if (gameIsOver) {
+    screen = <GameOver userNumber={userNumber} roundsNumber={guessRounds} onStartNewGame={onStartNewGameHandler} />;
   }
 
   return (
@@ -29,7 +50,7 @@ export default function App() {
         resizeMode="cover"
         imageStyle={styles.backgroundImage}
       >
-        {screen}
+        <SafeAreaView style={styles.rootScreen}> {screen}</SafeAreaView>
       </ImageBackground>
     </LinearGradient>
   );
