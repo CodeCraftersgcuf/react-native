@@ -10,10 +10,8 @@ import { MEALS } from '../data/dummy-data';
 import { useSelector, useDispatch } from 'react-redux';
 import { addFavourite, removeFavourite } from '../store/redux/favourite-slice';
 
-// import FavouriteContext from '../store/context/favourite-context';
 function MealDetailScreen({ route, navigation }) {
 
-  // const favouriteMealsCtx = useContext(FavouriteContext);
 
   const favoriteMealIds = useSelector((state) => state.favouriteMeals.ids);
   const dispatch = useDispatch();
@@ -22,15 +20,12 @@ function MealDetailScreen({ route, navigation }) {
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
-  // const mealIsFavorite = favouriteMealsCtx.ids.includes(mealId);
   const mealIsFavorite = favoriteMealIds.includes(mealId);
 
   function changeFavouriteStatusHandler() {
     if (mealIsFavorite) {
-      // favouriteMealsCtx.removeFavourite(mealId);
       dispatch(removeFavourite({ id: mealId }));
     } else {
-      // favouriteMealsCtx.addFavourite(mealId);
       dispatch(addFavourite({ id: mealId }));
     }
     console.log('Pressed!');
